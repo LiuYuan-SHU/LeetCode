@@ -34,6 +34,7 @@ class Solution {
 			ListNode* list = longer ? l1 : l2;		//save the longer list in list
 			ListNode* other = !longer ? l1 : l2;	//save the shorter list in other
 			ListNode* origin = list;
+			ListNode* previous = nullptr;
 
 			int carry = 0;							//store carry
 			//while both not reach the end
@@ -41,9 +42,9 @@ class Solution {
 				//val operation
 				list->val += other->val + carry;
 				carry = list->val / 10;
-				list->val %= 10;
-				
+				list->val %= 10;				
 				//pointer operation
+				previous = list;
 				list = list->next;
 				other = other->next;
 			}
@@ -52,15 +53,14 @@ class Solution {
 				//val operation
 				list->val += carry;
 				carry = list->val / 10;
-				list->val %= 10;
-				
+				list->val %= 10;				
 				//pointer operation
-				if(list->next == nullptr)
-				{
-					list->next = carry ? new ListNode(carry) : nullptr;
-					break;
-				}
+				previous = list;
 				list = list->next;
+			}
+			if(carry)
+			{
+				previous->next = new ListNode(carry);
 			}
 
 			return origin;
@@ -68,10 +68,11 @@ class Solution {
 		static void printList(ListNode* head) {
 			cout << '[';
 			while(head) {
-				cout << head->val << ',';
+				cout << head->val;
 				head = head->next;
+				if(head) { cout << ','; }
 			}
-			cout << ']';
+			cout << ']' << endl;
 		}
 
 };
@@ -83,25 +84,20 @@ class Test {
 			l1 = new ListNode(9,new ListNode(9,new ListNode(9,new ListNode(9,new ListNode(9,new ListNode(9,new ListNode(9)))))));
 			l2 = new  ListNode(9,new ListNode(9,new ListNode(9,new ListNode(9))));
 			ListNode *list = Solution::addTwoNumbers(l1,l2);
-			while(list) {
-				cout << list->val << " ";
-				list = list->next;
-			}
+			Solution::printList(list);
 		}
 
-		void test2() {
+		static void test2() {
 			ListNode *l1,*l2;
-			l1 = new ListNode();
-			l2 = new ListNode(4,new ListNode(6,new ListNode(5)));
+			l1 = new ListNode(5);
+			l2 = new ListNode(5);
 			ListNode *list = Solution::addTwoNumbers(l1,l2);
-			while(list) {
-				cout << list->val << " ";
-				list = list->next;
-			}
+			Solution::printList(list);
 		}
 
 };
 
 int main() {
 	Test::test1();
+	Test::test2();
 }
