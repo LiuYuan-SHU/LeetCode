@@ -30,7 +30,7 @@ int lengthOfLongestSubstring(string s)
 	//traverse the string for one time, time complexity = O(n)
 	for(size_t i = 0; i < length; i++)
 	{
-		indexOfChar = s[i];					//get current char, use it's ASC as index
+		indexOfChar = s[i];			//get current char, use it's ASC as index
 		//Compares the current index of this character to the last occurrence index
 		//take "abca" as example, and start_index pointes the first 'a'
 		//start_index = 0, lastApper[index] + 1 = "the last occurence index of 'a'" + 1
