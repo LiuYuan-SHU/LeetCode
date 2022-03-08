@@ -8,7 +8,7 @@
 
 #### [Question](https://leetcode-cn.com/problems/add-two-numbers/submissions/)
 
-#### [Resolution](./add-two-numbers.cpp)
+#### [Solution](./add-two-numbers.cpp)
 
 ![add-two-numbers 运行结果](README.assets/image-20220307172620775-16466451947221.png)
 
@@ -40,37 +40,52 @@
 
 2. If both lists have nodes, the process is normal
 
-    ```cpp
-    //while both not reach the end
-    while(list && other) {
-    	//val operation
-    	list->val += other->val + carry;
-    	carry = list->val / 10;
-    	list->val %= 10;				
-    	//pointer operation
-    	previous = list;
-    	list = list->next;
-    	other = other->next;
-    }
-    ```
-
 3. When the shorter chain ends, the remaining part of longer chain is connected directly, only carrying is considered
 
-    ```cpp
-    //if the longer list not reach the end
-    while(list) {
-    	//val operation
-    	list->val += carry;
-    	carry = list->val / 10;
-    	list->val %= 10;				
-    	//pointer operation
-    	previous = list;
-    	list = list->next;
-    }
-    if(carry)
-    {
-    	previous->next = new ListNode(carry);
-    }
-    ```
+
+
+### longest-substring-without-repeating-characters
+
+#### [Question](https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/)
+
+#### [Solution](./longest-substring-without-repeating-characters.cpp)
+
+![image-20220308224720837](README.assets/image-20220308224720837.png)
+
+<center><b>Result</b></center>
+
+#### Idea
+
+1. Use `lastAppear` to store the last occurrence index, the ASC code for each letter is its index
+
+    ![image-20220308225222536](README.assets/image-20220308225222536.png)
+
+2. ![image-20220308230341168](README.assets/image-20220308230341168.png)
 
     
+
+When `i` goes from 2 to 3 , which means `s[i] = the second 'a'`, the value of arguments are as follows:
+
+![image-20220308231247403](README.assets/image-20220308231247403.png)
+
+Then the loop begins:
+
+1. `indexOfChar = s[i] = 'a'`
+
+2. `start_index = start_index > (lastAppear[indexOfChar] + 1) ? start_index : (lastAppear[indexOfChar] + 1);`
+
+    1. `lastAppear[indexOfChar] + 1 = 1`
+    2. start_index = 0
+
+    So `start_idnex = 1`, this line means, ***When the program reads a char and its index is bigger than one stored in array `lastAppear`, `start_index` goes to the next char after `the char appears repeatedly`***
+
+    This line insures ***the chars between `start_index` and `i` only appear once***, this is very important
+
+3. `max_length = max_length > (i - start_index + 1) ? max_length : (i - start_index + 1);`
+
+    This is easy to understand: ***Compare `max_length` and `the distance from i to start_index`, the bigger one is the maximum***
+
+4. `lastAppear[indexOfChar] = i;`
+
+    Update the last occurrence of the char
+
