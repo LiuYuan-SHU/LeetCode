@@ -5,48 +5,30 @@ using namespace std;
 
 string longestPalindrome(string s) 
 {
-	if(s.size() == 0 || s.size() == 1)
-	{
-		return s;
-	}
-	else if(s.size() == 2)
-	{
-		return s[0] == s[1] ? s : string(1,s[0]);
-	}
+	size_t head = 0,tail = 0,max_len = 0;
+	int left = 0,right = 0,nextLeft = 0;
 	
-	string* result = new string();
-	const char* str = s.c_str();
-	
-	char repeat;
-	unsigned length = 0;
-	for(size_t i = 0; i < s.size(); length = 0,i++)
+	while(true)
 	{
-		repeat = str[i];
-		do
+		while(s[left] == s[right] && right < s.size()) { right++; }
+		nextLeft = right;
+		right--;
+		while(left >= 0 && right < s.size() && s[left] == s[right])
 		{
-			i++;
-			length++;
-		}while(i < s.size() && repeat == str[i]);
-		i--;
-		result =  result->size() >= length ? result : new string(length, repeat); 
+			if(max_len < right - left + 1)
+			{
+				max_len = right - left + 1;
+				head = left;
+				tail = right;
+			}
+			left--;
+			right++;
+		}	
+		left = right = nextLeft;
+		if(left == s.size()) { break; }	
 	}
 	
-	int offset = 0;
-	for(size_t i = 1; i < s.size(); offset = 0, i++)
-	{
-		if(str[i - 1] == str[i] && result->size() < 2)
-		{
-			result = new string(2, str[i - 1]);
-		}
-		do 
-		{
-			offset++;
-		}while(offset <= i && offset < (s.size() - i) && str[i - offset] == str[i + offset]);
-		offset--;
-		result = result->size() >= (1 + 2 * offset) ? result : (new string(&str[i - offset],2 * offset + 1));
-	}
-	
-	return *result;
+	return string(&s[head], &s[tail + 1]);	
 }
 
 void test(string input)
@@ -56,5 +38,10 @@ void test(string input)
 
 int main()
 {
+	test("a");
+	test("aa");
+	test("abb");
+	test("abccba");
+	test("abaabcba");
 	test("tattarrattat");
 }
