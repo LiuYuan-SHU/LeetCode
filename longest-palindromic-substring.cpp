@@ -16,8 +16,23 @@ string longestPalindrome(string s)
 	
 	string* result = new string();
 	const char* str = s.c_str();
-	int offset = 0;
 	
+	
+	char repeat;
+	unsigned length = 0;
+	for(size_t i = 0; i < s.size(); length = 0,i++)
+	{
+		repeat = str[i];
+		do
+		{
+			i++;
+			length++;
+		}while(i < s.size() && repeat == str[i]);
+		i--;
+		result =  result->size() >= length ? result : new string(length, repeat); 
+	}
+	
+	int offset = 0;
 	for(size_t i = 1; i < s.size(); offset = 0, i++)
 	{
 		if(str[i - 1] == str[i] && result->size() < 2)
@@ -47,4 +62,5 @@ int main()
 	test("aba");
 	test("abaabcdcba");
 	test("bbac");
+	test("aaaaaaaaaaa");
 }
