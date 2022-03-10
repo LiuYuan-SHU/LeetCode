@@ -1,9 +1,10 @@
 #include <iostream>
 #include <string>
-#include<vector>
+#include <vector>
 
 using namespace std;
 
+//My own solution 
 string convert(string s, int numRows)
 {
 	// handle special condtion
@@ -14,13 +15,16 @@ string convert(string s, int numRows)
 	// record the basic data of string
 	size_t length_input = s.size();
 	char* str_input = const_cast<char*>(s.c_str());
-	// create an array to store the new string
+	
+	// record current length of result
 	size_t length_result = 0;
+	// create an array to store the new string
 	char* str_result = new char[length_input + 1];
 
 	// handle special condition
 	if (numRows == 2)
 	{
+		// record the half length of input
 		size_t length_input_half = (length_input + length_input % 2) / 2;
 		char* firstLine = str_result;
 		char* secondLine = str_result + length_input_half;
@@ -48,11 +52,13 @@ string convert(string s, int numRows)
 	{
 		while (length_result < s.size() && str_input < s.c_str() + length_input)
 		{
+			// if offset_down is 0, reaches the last string
 			if (offset_down && str_input < s.c_str() + length_input)
 			{
 				str_result[length_result++] = *(str_input);
 				str_input += offset_down;
 			}
+			// if offset_up is 0, reaches the first string
 			if (offset_up && str_input < s.c_str() + length_input)
 			{
 				str_result[length_result++] = *(str_input);
@@ -67,34 +73,35 @@ string convert(string s, int numRows)
 	return string(str_result, length_result);
 }
 
+//copied from the fastest solution on leetcode-cn.com
 class Solution
 {
 public:
 	static string convert(string s, int numRows)
 	{
-		//记录最小字符串长度
+		//Record the minimum string length
 		size_t min = s.size() <= numRows ? s.size() : numRows;
-		//最小情况处理
+		//Special case processing
 		if (min == 1) { return s; }
 
-		//创建vector，长度仅为最小字符串长度
-		//每一个vector元素存储一个字符串，第一个元素存储第一行字符串
+		//Create vector, its length is `numRows` 
+		//Each elem is a string
 		vector<string> row(min);
-		int ret = 0;			//用ret来确定vector中的元素
-		bool dir = false;		//用dir来确定方向（direction）
+		int ret = 0;			//index of elems in vector
+		bool dir = false;		//determin direction
 		for (auto ch : s)
 		{
-			//将字符添加到对应字符串的末尾
+			//Appends the character to the end of the corresponding string
 			row[ret] += ch;
-			//如果到了两侧的字符串，那么转向
+			//Determine the direction according to dir
 			if ((ret == 0) || (ret == numRows - 1))
 			{
 				dir = !dir;
 			}
-			//根据dir类决定下一个字符串
+			//
 			ret += dir ? 1 : -1;
 		}
-		//将vector中的内容全部放到string中
+		//Put everything in the vector into string 
 		string res = "";
 		for (auto str : row)
 		{
